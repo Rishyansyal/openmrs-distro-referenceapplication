@@ -6,7 +6,7 @@ services:
       - frontend
       - backend
     ports:
-      - "80:80"
+      - "3032:80"
 
   frontend:
     image: openmrs/openmrs-reference-application-3-frontend:${TAG:-qa}
@@ -35,9 +35,12 @@ services:
       OMRS_CONFIG_CONNECTION_DATABASE: openmrs
       OMRS_CONFIG_CONNECTION_USERNAME: ${OMRS_DB_USER:-openmrs}
       OMRS_CONFIG_CONNECTION_PASSWORD: ${OMRS_DB_PASSWORD:-openmrs}
+      OMRS_DEV_DEBUG_PORT: "5005"   # Debug enabled
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/openmrs"]
       timeout: 5s
+    ports:
+      - "5005:5005"                 # Expose debug port
     volumes:
       - openmrs-data:/openmrs/data
 
